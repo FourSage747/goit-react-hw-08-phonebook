@@ -1,12 +1,14 @@
+import css from '../CSS/CSS.module.css';
 import { nanoid } from '@reduxjs/toolkit';
+import { addContactsThunk } from 'components/redux/task/thunk';
 // import { creatContacts } from 'components/redux/Reducer';
-import { addContactsThunk } from 'components/redux/thunk';
+// import { addContactsThunk } from 'components/redux/thunk';
 import { useDispatch, useSelector } from 'react-redux';
 
 
 export const Form = () => {
   
-  const { items } = useSelector((state) => state.contacts);
+  const { items } = useSelector((state) => state.contacts.contacts);
   const dispatch = useDispatch();
 
   const onClick = (e) => {
@@ -17,8 +19,10 @@ export const Form = () => {
       return form.reset();
     }
 
-    const isAlredyContacts = items.find(el => el.name === name.value);
-    if (isAlredyContacts) return alert(`${name.value} is alredy in contacts.`);
+    if (items) {
+      const isAlredyContacts = items.find(el => el.name === name.value);
+      if (isAlredyContacts) return alert(`${name.value} is alredy in contacts.`);
+    }
 
     const newContacts = {
       name: name.value,
@@ -31,6 +35,7 @@ export const Form = () => {
 
     return (
       <form onSubmit={onClick}>
+        <h2>Phonebook</h2>
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">
             Name
@@ -58,7 +63,7 @@ export const Form = () => {
         </div>
         <button
           type="submit"
-          className="btn btn-primary"
+          className={css.button}
         >
           Add contact
         </button>

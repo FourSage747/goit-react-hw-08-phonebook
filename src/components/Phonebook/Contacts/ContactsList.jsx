@@ -1,31 +1,30 @@
+import css from '../CSS/CSS.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Contacts } from './Contacts';
 // import { deleteContacts } from "components/redux/Reducer";
-import { deleteContactsThunk, getContactsThunk } from 'components/redux/thunk';
+// import { deleteContactsThunk, getContactsThunk } from 'components/redux/thunk';
 import { useEffect } from 'react';
-import { filterSelector } from 'components/redux/selector';
+// import { filterSelector } from 'components/redux/selector';
 import { ColorRing } from 'react-loader-spinner';
+import { deleteContactsThunk, getContactsThunk } from 'components/redux/task/thunk';
+import { filterSelector } from 'components/redux/task/selector';
 
 export const ContactsList = () => {
   //   const { filter } = useSelector(state => state.contacts);
-  const { isLoading } = useSelector(state => state.contacts);
+  const {token} = useSelector((state)=>state.auth)
+  const { isLoading } = useSelector(state => state.contacts.contacts);
   const filterContacts = useSelector(filterSelector);
+  // const { items } = useSelector(state => state.contacts.contacts);
 
   const dispatch = useDispatch();
-
-  //   const getFilterContacts = () => {
-  //     return items.filter(el =>
-  //       el.name.toLowerCase().includes(filter.toLowerCase())
-  //     );
-  //   };
 
   const handDelete = id => {
     dispatch(deleteContactsThunk(id));
   };
 
   useEffect(() => {
-    dispatch(getContactsThunk());
-  }, [dispatch]);
+    token && dispatch(getContactsThunk(token)).unwrap().then((data)=>console.log(data)).catch((err)=>console.log(err));
+  }, [token, dispatch]);
 
   return (
     <>
@@ -38,13 +37,13 @@ export const ContactsList = () => {
         wrapperClass="color-ring-wrapper"
         colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
       />}
-      {!isLoading && <ul>
-        {filterContacts.map(el => (
+      {!isLoading && <ul className={css.contacts}>
+        {filterContacts && filterContacts.map(el => (
           <Contacts
             key={el.id}
             id={el.id}
             name={el.name}
-            phone={el.phone}
+            number={el.number}
             handDelete={handDelete}
           />
         ))}

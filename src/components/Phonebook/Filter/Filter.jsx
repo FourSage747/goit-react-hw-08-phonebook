@@ -1,7 +1,9 @@
-import { setFilter } from "components/redux/Reducer";
+import css from '../CSS/CSS.module.css';
+// import { setFilter } from "components/redux/Reducer";
+import { setFilter } from "components/redux/task/Reducer";
 import { useDispatch } from "react-redux";
 
-export const Filter = ({title}) => {
+export const Filter = () => {
 
     const dispatch = useDispatch();
 
@@ -10,8 +12,9 @@ export const Filter = ({title}) => {
     };
 
     return (
-      <div>
-        <h3>{title}</h3>
+      <div className={css.filter}>
+        <h2>Contacts</h2>
+        <h4>Find contacts by name</h4>
         <input
           name="filter"
           type="text"

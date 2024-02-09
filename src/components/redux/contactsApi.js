@@ -1,24 +1,63 @@
-const url = 'https://65ba4146b4d53c066552685b.mockapi.io/contacts';
+import axios from "axios";
 
-export const getContacts = async () => {
-    const data = await fetch(url)
-    return await data.json()
+// axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
+const instance = axios.create({
+  baseURL: 'https://connections-api.herokuapp.com',
+})
+
+export const setToken = (token) => {
+  instance.defaults.headers.common['Authorization'] = token;
 }
 
-export const addContacts = async (res) => {
-    const data = await fetch(url,{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(res),
-    })
-    return await data.json()
+export const dellToken = () => {
+  delete instance.defaults.headers.common['Authorization'];
 }
 
-export const deleteContacts = async (id) => {
-    const data = await fetch(`${url}/${id}`, {
-        method: 'DELETE',
-    })
-    return await data.json()
+// export const singUp = async (body) => {
+//   const {data} = await axios.post(`/users/signup`, body); 
+//   return data; 
+// }
+export const singUp = async (body) => {
+  return await instance.post('/users/signup', body)
+}
+
+// export const login = async (body) => {
+//   const {data} = await axios.post(`/users/login`, body); 
+//   setToken(`Bearer ${data.token}`)
+//   return data; 
+// }
+export const login = async (body) => {
+  const {data} = await instance.post('/users/login', body)
+  setToken(`Bearer ${data.token}`)
+  return data
+}
+
+// export const getProfile = async (token) => {
+//   return await axios.post(`/users/logout`, token); 
+// }
+export const getProfile = async (token) => {
+  const {data} =  await instance.get(`/users/current`, token);
+  return data
+}
+
+// export const refreshUser = async (token) => {
+//   setToken(`Bearer ${token}`)
+//   const {data} = await axios.get(`/users/current`); 
+//   return data; 
+// }
+//*********************** */
+
+export const getContacts = async (token) => {
+  const {data} = await instance.get('/contacts', token);
+  return data
+}
+
+export const addContacts = async (text) => {
+  const {data} = await instance.post('/contacts', text);
+  return data
+}
+
+export const deleteContacts = async (taskId) => {
+  const {data} = await instance.delete(`/contacts/${taskId}`);
+  return data
 }

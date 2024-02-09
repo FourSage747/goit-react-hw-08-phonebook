@@ -1,7 +1,7 @@
 import css from '../CSS/CSS.module.css';
-export const Section = ({ children }) => {
+export const Div = ({ children }) => {
     return (
-        <div className={css.home}>
+        <div className={css.contactBook}>
             {children}
         </div>
     );
