@@ -36,11 +36,12 @@ export const login = async (body) => {
 //   return await axios.post(`/users/logout`, token); 
 // }
 export const getProfile = async (token) => {
+  // setToken(`Bearer ${token}`)
   const {data} =  await instance.get(`/users/current`, token);
   return data
 }
 
-// export const refreshUser = async (token) => {
+// export const getProfile = async (token) => {
 //   setToken(`Bearer ${token}`)
 //   const {data} = await axios.get(`/users/current`); 
 //   return data; 
@@ -48,6 +49,7 @@ export const getProfile = async (token) => {
 //*********************** */
 
 export const getContacts = async (token) => {
+  setToken(`Bearer ${token}`)
   const {data} = await instance.get('/contacts', token);
   return data
 }
