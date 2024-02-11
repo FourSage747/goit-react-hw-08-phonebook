@@ -65,22 +65,22 @@ export const Header = () => {
         >
           {profile ? 'Logout' : 'Login'}
         </button>
-        <NavLink
+        {!token && <NavLink
           className={`${css.link} ${
             location.pathname === '/register' ? css.linkActive : ''
           }`}
           to="/register"
         >
           Sign in
-        </NavLink>
-        <NavLink
+        </NavLink>}
+        {token && <NavLink
           className={`${css.link} ${
             location.pathname === '/contacts' ? css.linkActive : ''
           }`}
           to="/contacts"
         >
           Contacts
-        </NavLink>
+        </NavLink>}
       </ul>
     </div>
   );
